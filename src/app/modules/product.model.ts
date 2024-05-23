@@ -15,6 +15,7 @@ const inventorySchema = new Schema<TInventory>({
   inStock: { type: Boolean, default: false },
 });
 
+// main schema
 const productSchema = new Schema<TProduct, ProductModel>({
   name: { type: String, trim: true },
   description: { type: String },
@@ -43,13 +44,6 @@ productSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();
 });
-
-// post save middleware / hook
-// productSchema.post('save', function () {
-//     console.log(this, 'post hook: we saved out data')
-// })
-
-// creating a custom static method
 productSchema.statics.isUserExists = async function (name: string) {
   const existingUser = await Product.findOne({ name });
   return existingUser;

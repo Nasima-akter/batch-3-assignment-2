@@ -1,6 +1,7 @@
 import { Product } from '../product.model';
 import { TProduct } from './product.interface';
 
+// create product
 const createProductIntoDB = async (productData: TProduct) => {
     if (await Product.isUserExists(productData.name)) {
         throw new Error('User already exists');
@@ -9,6 +10,7 @@ const createProductIntoDB = async (productData: TProduct) => {
     return result;
 };
 
+// all product
 const getAllProductsFromDB = async () => {
     const result = await Product.find();
     return result;
@@ -20,6 +22,7 @@ const getSingleProductFromDB = async (_id: string) => {
     return result;
 };
 
+// delete product
 const deleteProductFromDB = async (_id: string) => {
     const result = await Product.deleteOne({ _id }, { isDelete: true });
     return result;

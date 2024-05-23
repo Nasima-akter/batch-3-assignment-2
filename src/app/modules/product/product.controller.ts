@@ -22,6 +22,7 @@ const createProduct = async (req: Request, res: Response) => {
   }
 };
 
+// get all product
 const getAllProducts = async (req: Request, res: Response) => {
   try {
     const result = await ProductServices.getAllProductsFromDB();
@@ -34,7 +35,7 @@ const getAllProducts = async (req: Request, res: Response) => {
     errorHandler(err as Error, req, res);
   }
 };
-
+// find single product
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
@@ -49,6 +50,7 @@ const getSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
+// delete product
 const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
@@ -63,6 +65,7 @@ const deleteProduct = async (req: Request, res: Response) => {
   }
 };
 
+// update product  
 const updateProductController = async (req: Request, res: Response) => {
   try {
     const { product: productData } = req.body;
@@ -87,7 +90,7 @@ const updateProductController = async (req: Request, res: Response) => {
   }
 };
 
-// testing
+// search 
 const searchProducts = async (req: Request, res: Response) => {
   try {
     const { searchTerm } = req.query;

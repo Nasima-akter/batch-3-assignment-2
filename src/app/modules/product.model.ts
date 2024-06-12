@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
 import {
-  ProductModel,
   TInventory,
   TProduct,
   TVariant,
@@ -16,7 +15,7 @@ const inventorySchema = new Schema<TInventory>({
 });
 
 // main schema
-const productSchema = new Schema<TProduct, ProductModel>({
+const productSchema = new Schema<TProduct>({
   name: { type: String, trim: true },
   description: { type: String },
   price: { type: Number },
@@ -49,4 +48,4 @@ productSchema.statics.isUserExists = async function (name: string) {
   return existingUser;
 };
 
-export const Product = model<TProduct, ProductModel>('Product', productSchema);
+export const Product = model<TProduct>('Product', productSchema);

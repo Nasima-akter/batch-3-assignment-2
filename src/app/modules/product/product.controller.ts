@@ -35,18 +35,25 @@ const getAllProducts = async (req: Request, res: Response) => {
     errorHandler(err as Error, req, res);
   }
 };
+
+
 // find single product
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
+    // console.log(productId);
     const result = await ProductServices.getSingleProductFromDB(productId);
     res.status(200).json({
       success: true,
       message: 'Product fetched successfully!',
       data: result,
     });
-  } catch (err: unknown) {
-    errorHandler(err as Error, req, res);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "something is wrong",
+      error: error,
+    });
   }
 };
 
@@ -65,16 +72,42 @@ const deleteProduct = async (req: Request, res: Response) => {
   }
 };
 
+//update  the sing order by cusomter 
+// const updateProductController = async (req: Request, res: Response) => {
+//   try {
+//     const { product } = req.body;
+//     const id = req.params.productId;
+//     const zodParseProduct = productValidationSchema.parse(product);
+//     const result = await ProductServices.updateProductInDB(
+//       id,
+//       zodParseProduct,
+//     );
+//     console.log(result);
+//     res.status(200).json({
+//       success: true,
+//       message: "Product is updated successfully",
+//       data: result,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Something went wrong",
+//       error: error,
+//     });
+//   }
+// };
+
 // update product  
 const updateProductController = async (req: Request, res: Response) => {
   try {
     const { product: productData } = req.body;
     const { productId } = req.params;
-    const updatedProduct = await ProductServices.updateProductInDB(
+    console.log(productId);
+    const result = await ProductServices.updateProductInDB(
       productId,
       productData,
     );
-    if (!updatedProduct) {
+    if (!result) {
       return res.status(404).json({
         success: false,
         message: 'Product not found',
@@ -83,7 +116,7 @@ const updateProductController = async (req: Request, res: Response) => {
     res.json({
       success: true,
       message: 'Product updated successfully!',
-      data: updatedProduct,
+      data: result,
     });
   } catch (err: unknown) {
     errorHandler(err as Error, req, res);

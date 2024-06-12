@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+
 
 export type TVariant = {
   type: string;
@@ -21,12 +21,3 @@ export type TProduct = {
   isDeleted?: boolean;
 };
 
-// for creating static
-export interface ProductModel extends Model<TProduct> {
-  isUserExists(name: string): Promise<TProduct | null>;
-}
-
-// export type ProductMethod = {
-//     isUserExists(name: string): Promise<TProduct | null>
-// }
-// export type ProductModel = Model<TProduct, Record<string, never>, ProductMethod>;

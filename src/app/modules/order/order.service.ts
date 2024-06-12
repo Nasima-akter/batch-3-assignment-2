@@ -2,6 +2,7 @@ import { TOrder } from './order.interface';
 import { Order } from './order.model';
 
 const createNewOrderIntoDB = async (orderData: TOrder) => {
+
   const result = await Order.create(orderData);
   return result;
 };
@@ -12,7 +13,7 @@ const getAllOrderFromDB = async () => {
 };
 
 const getOrderByEmailFromDB = async (email: string) => {
-  const result = await Order.aggregate([{ $match: { email } }]);
+  const result = await Order.findOne({ email });
   return result;
 };
 
@@ -21,3 +22,5 @@ export const OrderServices = {
   getAllOrderFromDB,
   getOrderByEmailFromDB,
 };
+
+

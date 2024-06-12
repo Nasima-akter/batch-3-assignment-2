@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { OrderServices } from './order.service';
+import OrderValidationSchema from './order.validation';
+// import { Order } from './order.model';
 
 // error handler
 export const errorHandler = (err: Error, req: Request, res: Response) => {
@@ -11,28 +13,16 @@ export const errorHandler = (err: Error, req: Request, res: Response) => {
 };
 
 // create post Order
-const createPostOrder = async (req: Request, res: Response) => {
-  try {
-    const { order: orderData } = req.body;
+const createOrder = async (req: Request, res: Response) => {
+  const { order: orderData } = req.body;
+  const zodOrderParseData = OrderValidationSchema.parse(orderData)
+  const result = await OrderServices.createNewOrderIntoDB(zodOrderParseData);
 
-    const result = await OrderServices.createNewOrderIntoDB(orderData);
-
-    res.status(200).json({
-      success: true,
-      message: 'Order created successfully!',
-      data: result,
-    });
-    return result;
-  } catch (err: unknown) {
-    // catch (err: any) {
-    //     res.status(500).json({
-    //         success: false,
-    //         message: err.message || 'something went wrong',
-    //         error: err,
-    //     });
-    // }
-    errorHandler(err as Error, req, res);
-  }
+  res.status(200).json({
+    success: true,
+    message: 'Order created successfully!',
+    data: result,
+  });
 };
 
 // get all order
@@ -44,34 +34,46 @@ const getAllOrders = async (req: Request, res: Response) => {
       message: 'Orders fetched successfully!',
       data: result,
     });
-  } catch (err: unknown) {
-    errorHandler(err as Error, req, res);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      error: error,
+    });
   }
 };
 
 // get by email
 const getOrderByEmail = async (req: Request, res: Response) => {
   try {
-    const { email } = req.query;
-    if (typeof email !== 'string') {
+    const email = req.query.email as string;
+
+    if (!email) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid email',
-      });
+        message: 'Email  is required'
+      })
     }
     const result = await OrderServices.getOrderByEmailFromDB(email);
+
+    // Send response
     res.status(200).json({
       success: true,
-      message: 'Orders fetched successfully for user email!',
+      message: `Orders fetched successfully for ${email}`,
       data: result,
     });
-  } catch (err: unknown) {
-    errorHandler(err as Error, req, res);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      error: error,
+    });
   }
 };
 
 export const OrderControllers = {
-  createPostOrder,
+  createOrder,
   getAllOrders,
   getOrderByEmail,
 };
+

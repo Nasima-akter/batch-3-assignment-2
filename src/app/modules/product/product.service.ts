@@ -3,9 +3,7 @@ import { TProduct } from './product.interface';
 
 // create product
 const createProductIntoDB = async (productData: TProduct) => {
-    if (await Product.isUserExists(productData.name)) {
-        throw new Error('User already exists');
-    }
+
     const result = await Product.create(productData);
     return result;
 };
@@ -16,24 +14,51 @@ const getAllProductsFromDB = async () => {
     return result;
 };
 
-const getSingleProductFromDB = async (_id: string) => {
-    // const result = await Product.findOne({ _id });
-    const result = await Product.aggregate([{ $match: { _id } }]);
+const getSingleProductFromDB = async (id: string) => {
+    const result = await Product.findById(id);
     return result;
 };
 
 // delete product
-const deleteProductFromDB = async (_id: string) => {
-    const result = await Product.deleteOne({ _id }, { isDelete: true });
+const deleteProductFromDB = async (id: string) => {
+    const result = await Product.findByIdAndUpdate(
+        id,
+        { isDelete: true },
+        {
+            new: true,
+        },
+    );
     return result;
 };
 
-const updateProductInDB = async (_id: string, productData: TProduct) => {
-    const result = await Product.findByIdAndUpdate({ _id }, productData, {
-        new: true,
-    });
-    return result;
+const updateProductInDB = async (_id: string, updatedProduct: Partial<TProduct>
+): Promise<TProduct | null> => {
+    try {
+        const result = await Product.findByIdAndUpdate(_id, updatedProduct,
+            { new: true },
+        );
+        return result;
+    } catch (error) {
+        throw new Error("Error updating product");
+    }
 };
+
+// const updateProductInDB = async (
+//     id: string,
+//     updatedProduct: Partial<TProduct>
+// ): Promise<TProduct | null> => {
+//     try {
+//         const result = await Product.findByIdAndUpdate(
+//             id,
+//             { $set: updatedProduct },
+//             { new: true }
+//         );
+//         return result;
+//     } catch (error) {
+//         console.error(`Error updating product with ID ${id}:`, error);
+//         throw new Error("Error updating product");
+//     }
+// };
 
 // https://www.youtube.com/watch?v=5ckmCW8png0
 // testing

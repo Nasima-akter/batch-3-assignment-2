@@ -295,3 +295,4 @@ To automatically fix formatting issues with Prettier:
   ### Submission:
   - GitHub Repository URL (Server): https://github.com/Nasima-akter/batch-3-assignment-2
   - Live Server Link: https://assignment-2-umber-sigma.vercel.app/
+  - https://assignment-2-umber-sigma.vercel.app/

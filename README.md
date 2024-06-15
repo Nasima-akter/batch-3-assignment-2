@@ -292,6 +292,10 @@ To automatically fix formatting issues with Prettier:
 - Endpoint: /api/orders?email=level2@programming-hero.com
 - Method: GET
 
+
+- https://assignment-2-umber-sigma.vercel.app/api/products
+- https://assignment-2-umber-sigma.vercel.app/api/products/create-product
+
   ### Submission:
   - GitHub Repository URL (Server): https://github.com/Nasima-akter/batch-3-assignment-2
   - Live Server Link: https://assignment-2-umber-sigma.vercel.app/
